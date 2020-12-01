@@ -7,6 +7,8 @@ Created on Tue Nov 17 10:40:45 2020
 
 import pandas as pd
 import numpy as np
+import datetime as dt
+
 
 PATH = r'./data/'
 FILE = 'dec19hourly.csv'
@@ -16,7 +18,7 @@ rowsToSkip = list(range(2,1000))
 df = pd.read_csv(FULLPATH,
                  index_col='DateTime',
                  header=0,
-                 skiprows=list(range(2,1000)),
+                 skiprows=list(range(2,2000)),
                  na_values=['--'],
                  parse_dates=['DateTime'],
                  decimal=',',
@@ -29,6 +31,6 @@ df = df[df.index.notna()]
 df['time'] = df.index.time
 
 dr = pd.date_range(start=df.index.min().date(),
-                   end=df.index.max().date(),
+                   end=df.index.max().date()+dt.timedelta(days=1),
                    freq='H')[:-1].to_pydatetime()
 
