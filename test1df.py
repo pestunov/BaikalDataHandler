@@ -14,7 +14,7 @@ PATH = r'./data/'
 FILE = 'dec19hourly.csv'
 FULLPATH = ''.join([PATH, FILE])
 print(FULLPATH)
-rowsToSkip = list(range(2,1000))
+
 df = pd.read_csv(FULLPATH,
                  index_col='DateTime',
                  header=0,
