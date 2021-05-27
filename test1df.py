@@ -15,7 +15,10 @@ FILE = 'dec19hourly.csv'
 FULLPATH = ''.join([PATH, FILE])
 print(FULLPATH)
 
+<<<<<<< HEAD
+=======
 # read and parse csv file
+>>>>>>> 0b96cdc43cad653360a621cb3e0934e5c01fee09
 df = pd.read_csv(FULLPATH,
                  index_col='DateTime',
                  header=0,
