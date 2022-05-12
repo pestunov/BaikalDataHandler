@@ -9,16 +9,14 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 
+import myTools as mt
 
 PATH = r'./data/'
 FILE = 'dec19hourly.csv'
 FULLPATH = ''.join([PATH, FILE])
 print(FULLPATH)
 
-<<<<<<< HEAD
-=======
 # read and parse csv file
->>>>>>> 0b96cdc43cad653360a621cb3e0934e5c01fee09
 df = pd.read_csv(FULLPATH,
                  index_col='DateTime',
                  header=0,
@@ -55,3 +53,4 @@ for ii in range(2, len(dr)-2, 2):
 # yy = df[dr[45]:dr[46]].mean()
 
 # dfh = df.resample(dr).mean()
+mt.hourly(2)
