@@ -20,8 +20,11 @@ import pymysql
 
 from datetime import datetime
 import pandas as pd
-import numpy as np
+import math
 import json
+
+from physic import R_EARTH
+import scheme_mar2023 as scheme
 
 posibleDateTimeColName = ["datetime", "date_time"]
 posibleDateTimeUTCColName = ["datetimeutc", "datetime_utc",
@@ -36,10 +39,46 @@ posibleDateTimeFormates = ["%d.%m.%Y %H:%M:%S", "%d.%m.%y %H:%M:%S",
                            "%d/%m/%Y %H:%M", "%d/%m/%y %H:%M",
                            "%Y-%m-%d %H:%M", "%y-%m-%d %H:%M"]
 
+def geo_my_dist(a, b) -> dict:
+    """
+    Calculate the distance between two points
+    on the earth (specified in decimal degrees)
+    """
+    lat1, long1, lat2, long2 = a[0], a[1], b[0], b[1]
+    dlat = lat2 - lat1
+    dlong = long2 - long1
+    xx = 2 * math.pi * R_EARTH * dlat / 360
+    yy = 2 * math.pi * R_EARTH * math.cos((lat1+lat2) / 2 / 180 * math.pi) * dlong / 360
+    dist = math.sqrt(xx * xx + yy * yy)
+    return {'dist': dist,
+            'a_1km': (lat1+dlat/dist*1, long1+dlong/dist*1),
+            'a_3km': (lat1+dlat/dist*3, long1+dlong/dist*3),
+            'a_5km': (lat1+dlat/dist*5, long1+dlong/dist*5),
+            'a_7km': (lat1+dlat/dist*7, long1+dlong/dist*7),
+            'mid': (lat1+dlat/2, long1+dlong/2),
+            'b_1km': (lat2-dlat/dist*1, long2-dlong/dist*1),
+            'b_3km': (lat2-dlat/dist*3, long2-dlong/dist*3),
+            'b_5km': (lat2-dlat/dist*5, long2-dlong/dist*5),
+            'b_7km': (lat2-dlat/dist*7, long2-dlong/dist*7),
+            }
+
+
+def geo_gen_stations() -> dict:
+    geo = {}
+    for k, val in scheme.intersects.items():
+        intersect = geo_my_dist(scheme.shore_points[val[0]], scheme.shore_points[val[1]])
+        geo['3km ' + val[0]] = intersect['a_3km']
+        geo['7km ' + val[0]] = intersect['a_7km']
+        geo['mid ' + val[0] + '_' + val[1]] = intersect['mid']
+        geo['7km ' + val[1]] = intersect['b_7km']
+        geo['3km ' + val[1]] = intersect['b_3km']
+    geo.update(scheme.points)
+    return geo
+
 
 def is_float(s):
-    if np.isnan(s):
-        return False
+#    if np.isnan(s):
+#        return False
     try:
         float(s)
         return True
