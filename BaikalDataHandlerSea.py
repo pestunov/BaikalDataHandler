@@ -10,10 +10,29 @@ import baikalfunctions as bfunc
 import scheme_mar2023 as scheme
 
 
-plt.style.use('Solarize_Light2')   # try another styles: 'classic'
+plt.style.use('dark_background')   # try another styles: 'classic'
 plt.rcParams['figure.figsize'] = [15, 5]
 
 saveImgPath = 'C:\\xampp\\htdocs\\img\\'
+
+obrisData = "G:/1_Data1/obris/obris.dat"
+obris = pd.read_csv(obrisData,
+                    header=0,
+                    na_values='--',
+                    sep='\t',
+                    decimal=',',
+                    )
+
+allMethaneData = "G:/1_Data1/sea/AllSeaGisOut.txt"
+colNames = ['i', 'long', 'lat', 'cCH4wtr']
+allMethane_df = pd.read_csv(allMethaneData,
+                            index_col=0,
+                            sep='\t',
+                            skiprows=[0, 1, 2],
+                            usecols=[0, 1, 2, 3],
+                            header=None,
+                            names=colNames,
+                            )
 
 # host = 192.168.3.53
 host = 'localhost'
@@ -84,15 +103,16 @@ while True:
     fig, axs = plt.subplots(2, 1)
 
     axs[0].set_title('CO2 air, ppm')
-    axs[0].plot(df.DateTime, df['vCO2'], '-', c='silver')
+    axs[0].plot(df.DateTime, df['vCO2'], '-', c='dimgray')
     axs[0].plot(df.DateTime, df['vCO2air'], 'r-')
 
     axs[1].set_title('CH4 air, ppm')
     axs[1].set_ylim(1.75, 2.5)
-    axs[1].plot(df.DateTime, df['vCH4'], '-', c='silver')
+    axs[1].plot(df.DateTime, df['vCH4'], '-', c='dimgray')
     axs[1].plot(df.DateTime, df['vCH4air'], 'b-')
 
     fig.savefig(saveImgPath+'cAir_vs_time.png')
+    plt.close(fig)
 
 
     ## RECOVERY HERE !!!
@@ -138,6 +158,10 @@ while True:
     df['cCH4wtr'] = cGasWtr * 1000000000    # ng/l
     df['pCH4wtr'] = cGasWtr * 1000000 / solubility  # mkatm
 
+    for col in ['cCO2wtr', 'pCO2wtr', 'cCH4wtr', 'pCH4wtr']:
+        df.loc[df[col] == np.inf, col] = np.nan
+        df.loc[df[col] == -np.inf, col] = np.nan
+        df.loc[df[col] <= 0, col] = np.nan
 
     df['pCO2'] = df['vCO2'] * df['PressAir']
 
@@ -146,10 +170,11 @@ while True:
     ## ax.set_xlim(pd.to_datetime('05.06.2023 18:00:00', dayfirst=True), pd.to_datetime('05.06.2023 19:00:00', dayfirst=True))
     ax.set_title('CO2 water, mkatm')
     ax.set_ylim(200, 600)
-    ax.plot(df.DateTime, df['pCO2'], '-', c='silver')
+    ax.plot(df.DateTime, df['pCO2'], '-', c='dimgray')
     ax.plot(df.DateTime, df['pCO2wtr'], 'r-')
     ax.plot(df.DateTime, df['pCO2air'], 'b-')
     fig.savefig(saveImgPath+'pCO2wtr_vs_time.png')
+    plt.close(fig)
 
 
     df['pCH4'] = df['vCH4'] * df['PressAir']
@@ -159,55 +184,69 @@ while True:
     ax.set_title('CH4 water, mkatm')
     # ax.set_xlim(pd.to_datetime('06.06.2023 10:00:00', dayfirst=True), pd.to_datetime('06.06.2023 19:00:00', dayfirst=True))
     ax.set_ylim(0, 100)
-    ax.plot(df.DateTime, df['pCH4'], '-', c='silver')
+    ax.plot(df.DateTime, df['pCH4'], '-', c='dimgray')
     ax.plot(df.DateTime, df['pCH4wtr'], 'b-')
     fig.savefig(saveImgPath+'pCH4wtr_vs_time.png')
+    plt.close(fig)
 
-
-    obrisData = "G:/1_Data1/obris/obris.dat"
-    obris = pd.read_csv(obrisData,
-                        header=0,
-                        na_values='--',
-                        sep='\t',
-                        decimal=',',
-                        )
-
-    allMethaneData = "G:/1_Data1/sea/AllSeaGisOut.txt"
-    colNames = ['i', 'long', 'lat', 'cCH4wtr']
-    allMethane_df = pd.read_csv(allMethaneData,
-                                index_col =0,
-                                sep='\t',
-                                skiprows=[0, 1, 2],
-                                usecols=[0, 1, 2, 3],
-                                header=None,
-                                names=colNames,
-                               )
 
     df.dropna(axis='index', subset=['Longitude', 'Latitude', 'cCH4wtr'], inplace=True)
 
-    cCH2lim = 700
-    df.loc[df.cCH4wtr > cCH2lim, 'cCH4wtr'] = cCH2lim
-    allMethane_df.loc[allMethane_df.cCH4wtr > cCH2lim, 'cCH4wtr'] = cCH2lim
+    cCH4lim = 700
+    df.loc[df.cCH4wtr > cCH4lim, 'cCH4wtr'] = cCH4lim
+    allMethane_df.loc[allMethane_df.cCH4wtr > cCH4lim, 'cCH4wtr'] = cCH4lim
 
 
     cCH4wtrlog_all = np.log(allMethane_df['cCH4wtr'])
     cCH4wtrlog = np.log(df['cCH4wtr'])
 
-    plt.rcParams['figure.figsize'] = [10, 10]
+    plt.rcParams['figure.figsize'] = [10, 14]
     fig, ax = plt.subplots()
-    ax.set_xlim(106.2, 109.4)
-    ax.set_ylim(52, 55)
+    #ax.set_xlim(106.2, 109.4)
+    #ax.set_ylim(52, 55)
 
     ax.plot(obris['long'], obris['lat'], 'b-')
-    ax.scatter(x='long', y='lat', c=cCH4wtrlog_all, s=50, marker='o', linewidth=0, cmap='rainbow', alpha=0.08, data=allMethane_df, )
+    ax.scatter(x='long', y='lat', c=cCH4wtrlog_all, s=60, marker='o', linewidth=0, cmap='rainbow', alpha=0.06, data=allMethane_df, )
     ax.scatter(df['Longitude'], df['Latitude'], c=cCH4wtrlog, s=30, marker='o', linewidth=0, cmap='rainbow', alpha=0.4,)
     fig.savefig(saveImgPath+'CH4wtrSpatialJun2023.png')
+    plt.close(fig)
 
+    ## Detailed color map
+
+    cCH2lim_top = 700
+    df.loc[df.cCH4wtr > cCH2lim_top, 'cCH4wtr'] = cCH2lim_top
+    allMethane_df.loc[allMethane_df.cCH4wtr > cCH2lim_top, 'cCH4wtr'] = cCH2lim_top
+    cCH2lim_bot = 0
+    df.loc[df.cCH4wtr < cCH2lim_bot, 'cCH4wtr'] = np.NaN
+    allMethane_df.loc[allMethane_df.cCH4wtr < cCH2lim_bot, 'cCH4wtr'] = np.NaN
+
+    df.dropna(axis='index', subset=['Longitude', 'Latitude', 'cCH4wtr'], inplace=True)
+
+    cCH4wtrlog_all = np.log(allMethane_df['cCH4wtr'])
+    cCH4wtrlog = np.log(df['cCH4wtr'])
+
+    plt.rcParams['figure.figsize'] = [10, 12]
+    fig, ax = plt.subplots()
+
+    d_lat_lim = 0.4  # +/- degree
+    d_long_lim = 0.6  # +/- degree
+    cur_coordinates = [float(df.tail(1).loc[:, 'Longitude']), float(df.tail(1).loc[:, 'Latitude'])]
+    ax.set_xlim(cur_coordinates[0] - d_long_lim, cur_coordinates[0] + d_long_lim)
+    ax.set_ylim(cur_coordinates[1] - d_lat_lim, cur_coordinates[1] + d_lat_lim)
+
+    ax.plot(obris['long'], obris['lat'], 'b-')
+    ax.scatter(x='long', y='lat', c=cCH4wtrlog_all, s=50, marker='o', linewidth=0, cmap='rainbow', alpha=0.1,
+               data=allMethane_df, )
+    ax.scatter(df['Longitude'], df['Latitude'], c=cCH4wtrlog, s=30, marker='o', linewidth=0, cmap='rainbow',
+               alpha=0.4, )
+    ax.scatter(cur_coordinates[0], cur_coordinates[1], c='white', s=30, marker='+', alpha=1,)
+    fig.savefig(saveImgPath + 'CH4wtrSpatialJun2023_detailed.png', transparent=True)
+    plt.close(fig)
     '''
     df.to_csv('1.txt')
     
     '''
     for _ in range(60):
-        time.sleep(10)
         print('.', end='')
+        time.sleep(10)
     print('!')
