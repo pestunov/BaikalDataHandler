@@ -128,3 +128,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Windows
+Scripts/
+etc/
+share/
+pyvenv.cfg
