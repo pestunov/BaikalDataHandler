@@ -9,7 +9,38 @@ import pandas as pd
 import numpy as np
 
 import physic
-import scheme_mar2023 as scheme
+
+
+class Baikalfunctions:
+
+    def __init__(self):
+        self.temperature = None
+        self.pressure = None
+
+    def pressConvert(self):
+        """ Convert input value to pressure [atm]
+        ranges of input values:
+            0..3 -> atm
+            3..300 -> kPa
+            300..2000 -> mmHg
+            >2000 -> Pa
+        """
+
+        try:
+            press_ref = press.mean()
+        except AttributeError:
+            press_ref = press
+
+        if press_ref <= 2:  # press in atm
+            return press
+        if press_ref <= 200:  # press in kPa
+            return press * 1000 / physic.NORM_PRESS
+        if press_ref <= 2000:  # press in mmHg """
+            return press / 760
+        if press_ref > 50000:  # press in Pa
+            return press / physic.NORM_PRESS
+        print('pressConvert: unknown press format')
+        return press
 
 
 """ add columns to df with names 'c'+DefName and 'p'+DefName filled with
@@ -145,6 +176,31 @@ def getDensity(temp, press, gas='CO2'):
         return None
     return molar_mass/physic.IDEAL_GAS_MOLAR_VOLUME * \
            _press * physic.NORM_TEMP_K/_temp
+
+
+def get_len(x, y):
+    return np.sqrt(x * x + y * y)
+
+
+def get_ang(x: float, y: float) -> any:
+    length = get_len(x, y)
+    if length == 0:
+        return None
+    ang = np.atan2(x, -y) * 180 / math.pi
+    return (ang + 270) % 360
+
+
+def navigate(lat_cur: float, long_cur: float, lat_goal: float, long_goal: float) -> tuple:
+    d_lat = lat_goal - lat_cur
+    d_long = long_goal - long_cur
+    lat_dist = d_lat * dist_1deg
+    long_dist = d_long * dist_1deg * math.cos(lat_cur)
+    dist = get_len(lat_dist, long_dist)
+    direct = get_ang(lat_dist, long_dist)
+#    print(dist, direct)
+    return direct, dist
+
+
 
 def mtest():
     # test solubility
