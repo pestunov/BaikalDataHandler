@@ -8,12 +8,13 @@ Created on Sun Mar 21 11:41:57 2021
 import pandas as pd
 import numpy as np
 
-IDEAL_GAS_MOLAR_VOLUME = 22.4          # l/mol
+IDEAL_GAS_MOLAR_VOLUME = 22.4           # l/mol
 NORM_PRESS = 101325                     # Pa
 NORM_TEMP_K = 273.13                    # grad K
 R = 8.314462                            # J/(mol*K)
 MOLAR_MASS = {'co2': 44, 'ch4': 16}     # g/mol
 
+R_EARTH = 6371                          # Earth radius, km
 
 MOB_NAME_CONV = {'date_time': 'DateTime',
                  'Pair': 'PressAir',
