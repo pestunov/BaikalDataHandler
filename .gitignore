@@ -10,6 +10,7 @@ untitled*.*
 
 # Distribution / packaging
 .Python
+include/
 build/
 develop-eggs/
 dist/
