@@ -64,16 +64,21 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'flow_air': 'AirFlow',
                  'AIR_FLOW': 'AirFlow',
                  'co2_picarro': 'vCO2',
+                 'picarro_co2': 'vCO2',
                  'PICARRO_CO2': 'vCO2',
+                 'CO2_dry': 'vCO2',
                  'PICARRO_CO2_err': 'vCO2Err',
                  'co2_picarro_min': 'vCO2min',
                  'co2_picarro_max': 'vCO2max',
                  'ch4_picarro': 'vCH4',
+                 'picarro_ch4': 'vCH4',
                  'PICARRO_CH4': 'vCH4',
+                 'CH4_dry': 'vCH4',
                  'PICARRO_CH4_err': 'vCH4Err',
                  'ch4_picarro_min': 'vCH4min',
                  'ch4_picarro_max': 'vCH4max',
                  'h2o_picarro': 'vH2O',
+                 'picarro_h2o': 'vH2O',
                  'PICARRO_H2O': 'vH2O',
                  'PICARRO_H2O_err': 'vH2OErr',
                  'speed': 'Speed',
@@ -147,9 +152,6 @@ WATER_FLOW_COLS = {1: 'WATER_FLOW_1',
 
 CO2PicarroScaut_cor = (0.961, 2.962)
 CH4PicarroScaut_cor = (1.015, 0.003)
-
-# tempEqu1_cor = {"k": 1.0, "b": 0.45}
-# tempEqu2_cor = {"k": 1.0, "b": -0.2}
 
 # Te_meteo sensors correction coefs
 solar_cor = (0.011432, 0)
