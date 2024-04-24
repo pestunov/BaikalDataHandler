@@ -19,6 +19,7 @@
 
 NAME_CONV_BAS = {'date_time': 'DateTime',
                  'DATETIME': 'DateTime',
+                 'datetime': 'DateTime',
                  'Pair': 'PressAir',
                  'pressure_air': 'PressAir',
                  'AIR_PRESSURE': 'PressAir',
@@ -63,9 +64,11 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'WATER_FLOW_4': 'WaterFlowEqu4',
                  'flow_air': 'AirFlow',
                  'AIR_FLOW': 'AirFlow',
+                 'AIRFLOW': 'AirFlow',
                  'co2_picarro': 'vCO2',
                  'picarro_co2': 'vCO2',
                  'PICARRO_CO2': 'vCO2',
+                 'PICARROCO2': 'vCO2',
                  'CO2_dry': 'vCO2',
                  'PICARRO_CO2_err': 'vCO2Err',
                  'co2_picarro_min': 'vCO2min',
@@ -73,6 +76,7 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'ch4_picarro': 'vCH4',
                  'picarro_ch4': 'vCH4',
                  'PICARRO_CH4': 'vCH4',
+                 'PICARROCH4': 'vCH4',
                  'CH4_dry': 'vCH4',
                  'PICARRO_CH4_err': 'vCH4Err',
                  'ch4_picarro_min': 'vCH4min',
@@ -80,6 +84,7 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'h2o_picarro': 'vH2O',
                  'picarro_h2o': 'vH2O',
                  'PICARRO_H2O': 'vH2O',
+                 'PICARROH2O': 'vH2O',
                  'PICARRO_H2O_err': 'vH2OErr',
                  'speed': 'Speed',
                  'SPEED': 'Speed',
@@ -104,20 +109,6 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
 
 cols2db_list = ['dateSec', 'pCO2_bot', 'pCO2_sur', 'pCO2_air', 'TEMP_DS3', 'AIR_PRESSURE']
 
-scheme_cols = ['chart_index',
-               'index_x', 'index_y',
-               'is_datetime',
-               'chart_type', 'chart_size', 'chart_color',
-               'caption_x', 'caption_y',
-               ]
-scheme_l = [
-    [0, 0, 1, 1, 'dot', 2, 'red', 'DateTime', 'vCO2_bot'],
-    [0, 0, 2, 1, 'dot', 2, 'blue', '', 'vCO2_sur'],
-    [0, 0, 3, 1, 'dot', 2, 'cyan', '', 'vCO2_air, mkatm'],
-    [1, 0, 4, 1, 'dot', 2, 'red', 'DateTime', 'Twtr_bot'],
-    [1, 0, 4, 1, 'dot', 2, 'blue', '', 'Twtr_sur, grad'],
-]
-
 names = {'prs': 'AIR_PRESSURE',
          'press': 'AIR_PRESSURE'}
 
@@ -140,7 +131,7 @@ WATER_TEMP_COLS = {1: 'TEMP_DS1',
                    2: 'TEMP_DS2',
                    3: 'TEMP_DS3',
                    4: 'TEMP_DS4',
-                   7: 'TEMP_DS1',
+                   7: 'TEMP_DS7',
                    }
 
 WATER_FLOW_COLS = {1: 'WATER_FLOW_1',
@@ -152,6 +143,9 @@ WATER_FLOW_COLS = {1: 'WATER_FLOW_1',
 
 CO2PicarroScaut_cor = (0.961, 2.962)
 CH4PicarroScaut_cor = (1.015, 0.003)
+
+# tempEqu1_cor = {"k": 1.0, "b": 0.45}
+# tempEqu2_cor = {"k": 1.0, "b": -0.2}
 
 # Te_meteo sensors correction coefs
 solar_cor = (0.011432, 0)
