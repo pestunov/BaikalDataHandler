@@ -40,11 +40,11 @@ class Baikalfunctions:
         if press_ref <= 2:  # press in atm
             return press
         if press_ref <= 200:  # press in kPa
-            return press * 1000 / physic.NORM_PRESS
+            return press * 1000 / NORM_PRESS
         if press_ref <= 2000:  # press in mmHg """
             return press / 760
         if press_ref > 50000:  # press in Pa
-            return press / physic.NORM_PRESS
+            return press / NORM_PRESS
         print('pressConvert: unknown press format')
         return press
 
@@ -108,11 +108,11 @@ def pressConvert(press):
     if press_ref <= 2:  # press in atm
         return press
     if press_ref <= 200:  # press in kPa
-        return press * 1000 / physic.NORM_PRESS
+        return press * 1000 / NORM_PRESS
     if press_ref <= 2000:  # press in mmHg """
         return press / 760
     if press_ref > 50000:  # press in Pa
-        return press / physic.NORM_PRESS
+        return press / NORM_PRESS
     print('pressConvert: unknown press format')
     return press
 
@@ -130,7 +130,7 @@ def temperatureConvert(temp):
         temp_mean = temp
 
     if temp_mean <= 200:  # temp in grad C
-        return temp + physic.NORM_TEMP_K
+        return temp + NORM_TEMP_K
     if temp_mean > 200:  # temp in grad K
         return temp
 
@@ -144,14 +144,14 @@ def getSolubility(temp, gas='CO2'):
     float number means solubility as Vol of gas per Vol of water  g/l
     """
     try:
-        molar_mass = physic.MOLAR_MASS[gas.lower()]
+        molar_mass = MOLAR_MASS[gas.lower()]
     except KeyError:
         print('getSolubility: wrong gas identification')
         return 0
-    norm_density = molar_mass/physic.IDEAL_GAS_MOLAR_VOLUME
+    norm_density = molar_mass/IDEAL_GAS_MOLAR_VOLUME
 
     _temp = temperatureConvert(temp)
-    _temp -= physic.NORM_TEMP_K  # to gradC
+    _temp -= NORM_TEMP_K  # to gradC
     if gas.lower() == 'co2':
         return (0.1588+1.528*np.exp(-_temp/26.598))*norm_density
     if gas.lower() == 'ch4':
@@ -176,12 +176,12 @@ def getDensity(temp, press, gas='CO2'):
 
     _temp = temperatureConvert(temp)
     try:
-        molar_mass = physic.MOLAR_MASS[gas.lower()]
+        molar_mass = MOLAR_MASS[gas.lower()]
     except KeyError:
         print('wrong gas identification')
         return None
-    return molar_mass/physic.IDEAL_GAS_MOLAR_VOLUME * \
-           _press * physic.NORM_TEMP_K/_temp
+    return molar_mass/IDEAL_GAS_MOLAR_VOLUME * \
+           _press * NORM_TEMP_K/_temp
 
 
 def get_len(x, y):
