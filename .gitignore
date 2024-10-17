@@ -138,3 +138,6 @@ pyvenv.cfg
 
 .idea/
 
+# Data & plain texts
+*.dat
+*.txt
