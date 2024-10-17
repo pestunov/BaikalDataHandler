@@ -22,9 +22,13 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'datetime': 'DateTime',
                  'Pair': 'PressAir',
                  'pressure_air': 'PressAir',
+                 'pressair': 'PressAir',
+                 'Press': 'PressAir',
                  'AIR_PRESSURE': 'PressAir',
                  'Tair': 'TempAir',
                  'temperature_air': 'TempAir',
+                 'tempair': 'TempAir',
+                 'Temp': 'TempAir',
                  'AIR_TEMPERATURE': 'TempAir',
                  'relative_humidity_air': 'HumidityAir',
                  'AIR_HUMIDITY': 'HumidityAir',
@@ -37,9 +41,11 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'Fi': 'WindDir',
                  'precipitation': 'Precipitation',
                  'RAIN': 'Precipitation',
+                 'lat': 'Latitude',
                  'latitude': 'Latitude',
                  'LATITUDE': 'Latitude',
-                 'longitude': 'Longitude',
+                 'long': 'Longitude',
+                 'lon': 'Longitude',
                  'LONGITUDE': 'Longitude',
                  'temperature_equ_1': 'TempEqu1',
                  'EKV_1_TEMP': 'TempEqu1',
@@ -50,6 +56,9 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'temperature_equ_3': 'TempEqu3',
                  'EKV_3_TEMP': 'TempEqu3',
                  'TEMP_DS3': 'TempEqu3',
+                 'temperature_equ_4': 'TempEqu4',
+                 'EKV_4_TEMP': 'TempEqu4',
+                 'TEMP_DS4': 'TempEqu4',
                  'temperature_ds_1': 'TempEqu1',
                  'temperature_ds_2': 'TempEqu2',
                  'temperature_ds_3': 'TempEqu3',
@@ -103,9 +112,44 @@ NAME_CONV_BAS = {'date_time': 'DateTime',
                  'KFA_G': 'FluoKfaGrn',
                  'fluo_kfa_blue': 'FluoKfaBlu',
                  'KFA_B': 'FluoKfaBlu',
-                 'comment': 'Comments'
-
+                 'comment': 'Comments',
+                 'cCO2Air': 'cCO2air',
+                 'pCO2Air': 'pCO2air',
+                 'vCO2Air': 'vCO2air',
+                 'cCH4Air': 'cCH4air',
+                 'pCH4Air': 'cCO2air',
+                 'vCH4Air': 'vCO2air',
+                 'cCO2Wtr': 'cCO2wtr',
+                 'pCO2Wtr': 'pCO2wtr',
+                 'vCO2Wtr': 'vCO2wtr',
+                 'cCH4Wtr': 'cCH4wtr',
+                 'pCH4Wtr': 'cCO2wtr',
+                 'vCH4Wtr': 'vCO2wtr',
+                 'cCO2Sur': 'cCO2sur',
+                 'pCO2Sur': 'pCO2sur',
+                 'vCO2Sur': 'vCO2sur',
+                 'cCH4Sur': 'cCH4sur',
+                 'pCH4Sur': 'cCO2sur',
+                 'vCH4Sur': 'vCO2sur',
+                 'cCO2Bot': 'cCO2bot',
+                 'pCO2Bot': 'pCO2bot',
+                 'vCO2Bot': 'vCO2bot',
+                 'cCH4Bot': 'cCH4bot',
+                 'pCH4Bot': 'cCO2bot',
+                 'vCH4Bot': 'vCO2bot',
+                 'dpCO2': 'dpCO2',
+                 'dpCH4': 'dpCH4',
+                 
+                 
                  }
+
+def get_rename_dict_simple():
+    dr=dict()
+    for x in NAME_CONV_BAS.keys():
+        k = x.lower()
+        k = k.replace('_','')
+        dr[k] = NAME_CONV_BAS[x]
+    return dr
 
 cols2db_list = ['dateSec', 'pCO2_bot', 'pCO2_sur', 'pCO2_air', 'TEMP_DS3', 'AIR_PRESSURE']
 
