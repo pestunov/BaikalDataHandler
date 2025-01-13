@@ -133,6 +133,7 @@ def temperatureConvert(temp):
         return temp + NORM_TEMP_K
     if temp_mean > 200:  # temp in grad K
         return temp
+    return None
 
 
 def getSolubility(temp, gas='CO2'):
@@ -150,12 +151,12 @@ def getSolubility(temp, gas='CO2'):
         return 0
     norm_density = molar_mass/IDEAL_GAS_MOLAR_VOLUME
 
-    _temp = temperatureConvert(temp)
-    _temp -= NORM_TEMP_K  # to gradC
+    temp = temperatureConvert(temp)
+
     if gas.lower() == 'co2':
-        return (0.1588+1.528*np.exp(-_temp/26.598))*norm_density
+        return (0.1588+1.528*np.exp(-(temp-NORM_TEMP_K)/26.598))*norm_density
     if gas.lower() == 'ch4':
-        return (0.0194+0.038*np.exp(-_temp/21.873))*norm_density
+        return (0.0194+0.038*np.exp(-(temp-NORM_TEMP_K)/21.873))*norm_density
     else:
         print('wrong gas identification')
     return None
@@ -170,18 +171,21 @@ def getDensity(temp, press, gas='CO2'):
     output:
     float number means density [g/l]"""
     if press is None:
-        _press = 1
+        press = 1
     else:
-        _press = pressConvert(press)
+        press = pressConvert(press)
 
-    _temp = temperatureConvert(temp)
+    if temp is None:
+        temp = NORM_TEMP_K
+    else:
+        temp = temperatureConvert(temp)
+
     try:
         molar_mass = MOLAR_MASS[gas.lower()]
     except KeyError:
         print('wrong gas identification')
         return None
-    return molar_mass/IDEAL_GAS_MOLAR_VOLUME * \
-           _press * NORM_TEMP_K/_temp
+    return molar_mass/IDEAL_GAS_MOLAR_VOLUME * press * NORM_TEMP_K/temp
 
 
 def get_len(x, y):

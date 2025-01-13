@@ -106,7 +106,7 @@ def connectBase(**kwarg):
 
 
 def mySQLQuery(cursor, query):
-    print(f"query: {query}")
+    # print(f"query: {query}")
     query = re.sub(r'[,;\s]+$', '', query)
     query += ';'
     return cursor.execute(query)
@@ -230,7 +230,7 @@ def _addColsToBD(cols_list, cursor, baseName, tableName):
 
 
 def readFile(fullpath):
-    '''return list of each file's strings '''
+    ''' return list of each file's strings '''
     with open(fullpath, 'r') as file:
         f = file.read()
         res_list = f.split('\n')
