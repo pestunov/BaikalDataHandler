@@ -17,41 +17,6 @@ MOLAR_MASS = {'co2': 44, 'ch4': 16}     # g/mol
 R_EARTH = 6371.0088  # (2 * R_Equator + 1 * R_Pole) / 3
 
 
-class Baikalfunctions:
-
-    def __init__(self):
-        self.temperature = None
-        self.pressure = None
-
-    def pressConvert(self):
-        """ Convert input value to pressure [atm]
-        ranges of input values:
-            0..3 -> atm
-            3..300 -> kPa
-            300..2000 -> mmHg
-            >2000 -> Pa
-        """
-
-        try:
-            press_ref = press.mean()
-        except AttributeError:
-            press_ref = press
-
-        if press_ref <= 2:  # press in atm
-            return press
-        if press_ref <= 200:  # press in kPa
-            return press * 1000 / NORM_PRESS
-        if press_ref <= 2000:  # press in mmHg """
-            return press / 760
-        if press_ref > 50000:  # press in Pa
-            return press / NORM_PRESS
-        print('pressConvert: unknown press format')
-        return press
-
-
-""" add columns to df with names 'c'+DefName and 'p'+DefName filled with
-    recovered values in [g/l] and [uatm] accordingly """
-
 def equToWtrRecovery(datetime, v_gas_equ, v_gas_air, t_wtr, press, v_air, v_wtr, equ_param, gas_type='CO2'):
     # !!!
     dt = datetime.shift(1) - datetime  # time delta to int of minutes
@@ -150,9 +115,7 @@ def getSolubility(temp, gas='CO2'):
         print('getSolubility: wrong gas identification')
         return 0
     norm_density = molar_mass/IDEAL_GAS_MOLAR_VOLUME
-
     temp = temperatureConvert(temp)
-
     if gas.lower() == 'co2':
         return (0.1588+1.528*np.exp(-(temp-NORM_TEMP_K)/26.598))*norm_density
     if gas.lower() == 'ch4':

@@ -23,7 +23,7 @@ import pandas as pd
 import math
 import json
 
-from physic import R_EARTH
+from baikalVariables import R_EARTH
 import scheme_mar2023 as scheme
 
 posibleDateTimeColName = ["datetime", "date_time"]
