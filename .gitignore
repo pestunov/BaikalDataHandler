@@ -139,6 +139,12 @@ pyvenv.cfg
 
 .idea/
 
-# Data & plain texts
+# media
+*.jpg
+*.png
+*.gif
+
+# mydata
+*.csv
 *.dat
 *.txt
