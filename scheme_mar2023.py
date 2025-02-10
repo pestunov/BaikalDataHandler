@@ -68,6 +68,7 @@ nameAliases =  {'datetime': 'DateTime',
                 'temperatureequ4': 'TempEqu4',
                 'temperatureds4': 'TempEqu4',
                 
+                'waterflow': 'WaterFlow1',
                 'waterflow1': 'WaterFlow1',
                 'waterflow2': 'WaterFlow2',
                 'waterflow3': 'WaterFlow3',
